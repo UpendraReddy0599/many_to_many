@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Certificate</title>
+</head>
+<body>
+    <div style="text-align: center; padding: 20px;">
+        <h1>Certificate of Completion</h1>
+        <p>{{ certificate_text|linebreaks }}</p>
+        <p>JWT Token: {{ jwt_token }}</p>
+        <button onclick="verifyCertificate()">Verify Certificate</button>
+        <div id="verificationResult"></div>
+    </div>
+    
+    <script>
+        function verifyCertificate() {
+            var token = document.getElementById("jwtToken").innerText;
+            
+            fetch(`/verify_certificate/?token=${token}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("verificationResult").innerText = data.message || data.error;
+            });
+        }
+    </script>
+</body>
+</html>

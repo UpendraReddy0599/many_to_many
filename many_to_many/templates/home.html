@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assignment</title>
+</head>
+<body>
+    <h1>Select Teacher and Student</h1>
+    <select id="teacher">
+        {% for teacher in teachers %}
+        <option value="{{ teacher.id }}"> {{ teacher.name }} </option>
+        {% endfor %}
+    </select>
+    
+    <select id="student">
+        {% for student in students %}
+        <option value="{{ student.id }}"> {{ student.name }} </option>
+        {% endfor %}
+    </select>
+    
+    <button onclick="getSelectedPair()">Generate Certificate</button>
+    
+    <div id="certificate"></div>
+    
+    <script>
+        function getSelectedPair() {
+            var teacherId = document.getElementById("teacher").value;
+            var studentId = document.getElementById("student").value;
+            
+            fetch(`/get_students_or_teachers/?id=${teacherId}&type=teacher`)
+            .then(response => response.json())
+            .then(data => {
+                var studentOptions = "";
+                data.data.forEach(function(student) {
+                    studentOptions += `<option value="${student.id}">${student.name}</option>`;
+                });
+                document.getElementById("student").innerHTML = studentOptions;
+            });
+        }
+    </script>
+</body>
+</html>
